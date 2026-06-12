@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="robot_3r">
+
+    <!-- Materiales -->
+
+    <material name="dark_grey">
+        <color rgba="0.2 0.2 0.2 1"/>
+    </material>
+
+    <material name="light_grey">
+        <color rgba="0.6 0.6 0.6 1"/>
+    </material>
+
+    <material name="blue">
+        <color rgba="0.0 0.2 0.8 1"/>
+    </material>
+
+
+    <!-- Base fija para Gazebo -->
+
+    <link name="world"/>
+
+    <joint name="fixed_base_joint" type="fixed">
+        <parent link="world"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+
+    <!-- Base -->
+
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 0.040109" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://robot_3r_description/meshes/baserobot.stl"/>
+            </geometry>
+            <material name="dark_grey"/>
+        </visual>
+
+        <!-- Colisión simplificada para Gazebo -->
+        <collision>
+            <origin xyz="0.0073 -0.0079 0.0025" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.090 0.100 0.085"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <origin xyz="0.007690 -0.003115 -0.004304" rpy="0 0 0"/>
+            <mass value="0.402"/>
+            <inertia ixx="0.000518958" ixy="-0.000001318" ixz="0.000003052"
+                     iyy="0.000481102" iyz="0.000017218"
+                     izz="0.000283214"/>
+        </inertial>
+    </link>
+
+
+    <!-- Joint 1 cintura -->
+
+    <joint name="joint_1" type="revolute">
+        <parent link="base_link"/>
+        <child link="cintura_link"/>
+        <origin xyz="0.007316 -0.012207 0.085300" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-3.1416" upper="3.1416" effort="100.0" velocity="1.0"/>
+        <dynamics damping="0.1" friction="0.01"/>
+    </joint>
+
+    <link name="cintura_link">
+        <visual>
+            <origin xyz="-0.007316 0.012207 -0.045191" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://robot_3r_description/meshes/robotcintura.stl"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+
+        <!-- Colisión simplificada -->
+        <collision>
+            <origin xyz="0 0 0.025" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.045" length="0.055"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <origin xyz="0.000000 -0.000013 0.021964" rpy="0 0 0"/>
+            <mass value="0.214"/>
+            <inertia ixx="0.000068001" ixy="-0.000000484" ixz="-0.000000060"
+                     iyy="0.000165953" iyz="-0.000000033"
+                     izz="0.000137221"/>
+        </inertial>
+    </link>
+
+
+    <!-- Joint 2 hombro -->
+
+    <joint name="joint_2" type="revolute">
+        <parent link="cintura_link"/>
+        <child link="brazo_link"/>
+        <origin xyz="0 0 0.039809" rpy="0 0 0"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="-1.5708" upper="1.5708" effort="200.0" velocity="1.0"/>
+        <dynamics damping="0.1" friction="0.01"/>
+    </joint>
+
+    <link name="brazo_link">
+        <visual>
+            <origin xyz="-0.007316 0.012207 -0.085000" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://robot_3r_description/meshes/robotantebrazo.stl"/>
+            </geometry>
+            <material name="dark_grey"/>
+        </visual>
+
+        <!-- Colisión simplificada del brazo vertical -->
+        <collision>
+            <origin xyz="0 0 0.120" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.060 0.060 0.250"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <origin xyz="0.000099 0.001658 0.120414" rpy="0 0 0"/>
+            <mass value="0.448"/>
+            <inertia ixx="0.002115146" ixy="0.000000011" ixz="0.000000053"
+                     iyy="0.002204573" iyz="0.000008439"
+                     izz="0.000142491"/>
+        </inertial>
+    </link>
+
+
+    <!-- Joint 3 codo -->
+
+    <joint name="joint_3" type="revolute">
+        <parent link="brazo_link"/>
+        <child link="antebrazo_link"/>
+        <origin xyz="0 -0.027000 0.237000" rpy="0 0 0"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="-1.5708" upper="1.5708" effort="150.0" velocity="1.0"/>
+        <dynamics damping="0.1" friction="0.01"/>
+    </joint>
+
+    <link name="antebrazo_link">
+        <visual>
+            <origin xyz="-0.007316 0.039207 -0.322000" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://robot_3r_description/meshes/robotbrazo.stl"/>
+            </geometry>
+            <material name="light_grey"/>
+        </visual>
+
+        <!-- Colisión simplificada del brazo horizontal -->
+        <collision>
+            <origin xyz="0 -0.120 0.005" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.050 0.250 0.050"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <origin xyz="0.000484 -0.121900 0.004759" rpy="0 0 0"/>
+            <mass value="0.304"/>
+            <inertia ixx="0.002391018" ixy="0.000009703" ixz="0.000000681"
+                     iyy="0.000062846" iyz="0.000068461"
+                     izz="0.002397553"/>
+        </inertial>
+    </link>
+
+
+    <!-- Pinza fija al antebrazo -->
+
+    <joint name="joint_pinza" type="fixed">
+        <parent link="antebrazo_link"/>
+        <child link="pinza_link"/>
+        <origin xyz="0 -0.216000 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="pinza_link">
+        <visual>
+            <origin xyz="-0.007316 0.255207 -0.322000" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://robot_3r_description/meshes/robotgrippe.stl"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+
+        <!-- Colisión simplificada de la pinza -->
+        <collision>
+            <origin xyz="0 -0.020 0.015" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.050 0.070 0.060"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.029"/>
+            <inertia ixx="0.000011437" ixy="0.000000090" ixz="-0.000000094"
+                     iyy="0.000012307" iyz="0.000004537"
+                     izz="0.000014633"/>
+        </inertial>
+    </link>
+
+</robot>
